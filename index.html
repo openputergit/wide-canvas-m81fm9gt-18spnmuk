@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        input {
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 10px;
+            color: white;
+        }
+        body {
+            background: linear-gradient(45deg, #4158D0, #C850C0, #FFCC70);
+            min-height: 100vh;
+            color: white;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="glass p-6 mb-8">
+            <h1 class="text-2xl font-bold mb-6">Shipping Rate Calculator</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Input Section -->
+                <div class="glass p-4">
+                    <h2 class="font-semibold mb-4">Input Values</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label>RATE / SQF:</label>
+                            <input type="number" id="rateSqf" value="20" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>SQF:</label>
+                            <input type="number" id="sqf" value="15.5" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>BOX / CONT:</label>
+                            <input type="number" id="boxCont" value="1040" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>INDIA CHARGES:</label>
+                            <input type="number" id="indiaCharges" value="60000" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>FRIGHTS USD:</label>
+                            <input type="number" id="frightsUsd" value="125" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>FRIGHT CONVERSION RATE:</label>
+                            <input type="number" id="frightConvRate" value="86.8" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>USD to AED:</label>
+                            <input type="number" id="usdAed" value="3.685" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>DUBAI CHARGES IN AED:</label>
+                            <input type="number" id="dubaiCharges" value="2800" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>EXP:</label>
+                            <input type="number" id="exp" value="1.33" class="glass-input w-full rounded">
+                        </div>
+                        <div>
+                            <label>SALE RATE:</label>
+                            <input type="number" id="saleRate" value="15" class="glass-input w-full rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="glass p-4 lg:col-span-2">
+                    <h2 class="font-semibold mb-4">Calculated Results</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="glass p-3">
+                            <label>SQM:</label>
+                            <div id="sqm" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>RATE / BOX:</label>
+                            <div id="rateBox" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>RATE / CONTAINER:</label>
+                            <div id="rateContainer" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>SQM / CONTAINER:</label>
+                            <div id="sqmContainer" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>FOB INR:</label>
+                            <div id="fobInr" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>FOB USD:</label>
+                            <div id="fobUsd" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>FOB / SQM:</label>
+                            <div id="fobSqm" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>FRIGHT IN USD:</label>
+                            <div id="frightInUsd" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>C & F:</label>
+                            <div id="cAndF" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>C & F AED:</label>
+                            <div id="cAndFAed" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>LENDING RATE IN AED / CONTENAR:</label>
+                            <div id="lendingRateAed" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>LENDING RATE IN SQM DIRHAM:</label>
+                            <div id="lendingRateSqm" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>ACTUAL LANDING:</label>
+                            <div id="actualLanding" class="font-bold"></div>
+                        </div>
+                        <div class="glass p-3">
+                            <label>PROFIT:</label>
+                            <div id="profit" class="font-bold"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to get input values
+        const getInputValue = (id) => Number(document.getElementById(id).value);
+
+        // Function to set output values
+        const setOutput = (id, value) => {
+            document.getElementById(id).textContent = value.toFixed(2);
+        };
+
+        // Function to calculate all values
+        function calculateAll() {
+            // Get input values
+            const rateSqf = getInputValue('rateSqf');
+            const sqf = getInputValue('sqf');
+            const boxCont = getInputValue('boxCont');
+            const indiaCharges = getInputValue('indiaCharges');
+            const frightsUsd = getInputValue('frightsUsd');
+            const frightConvRate = getInputValue('frightConvRate');
+            const usdAed = getInputValue('usdAed');
+            const dubaiCharges = getInputValue('dubaiCharges');
+            const exp = getInputValue('exp');
+            const saleRate = getInputValue('saleRate');
+
+            // Calculate values
+            const sqm = sqf / 10.76;
+            const rateBox = rateSqf * sqf;
+            const rateContainer = rateBox * boxCont;
+            const sqmContainer = boxCont * sqm;
+            const fobInr = rateContainer + indiaCharges;
+            const fobUsd = fobInr / frightConvRate;
+            const fobSqm = (fobUsd / boxCont) / 1.44;
+            const frightInUsd = frightsUsd * ((frightConvRate + 5) / frightConvRate);
+            const cAndF = fobUsd + frightInUsd;
+            const cAndFAed = cAndF * usdAed;
+            const lendingRateAed = cAndFAed + dubaiCharges;
+            const lendingRateSqm = lendingRateAed / sqmContainer;
+            const actualLanding = exp + lendingRateSqm;
+            const profit = saleRate - actualLanding;
+
+            // Set output values
+            setOutput('sqm', sqm);
+            setOutput('rateBox', rateBox);
+            setOutput('rateContainer', rateContainer);
+            setOutput('sqmContainer', sqmContainer);
+            setOutput('fobInr', fobInr);
+            setOutput('fobUsd', fobUsd);
+            setOutput('fobSqm', fobSqm);
+            setOutput('frightInUsd', frightInUsd);
+            setOutput('cAndF', cAndF);
+            setOutput('cAndFAed', cAndFAed);
+            setOutput('lendingRateAed', lendingRateAed);
+            setOutput('lendingRateSqm', lendingRateSqm);
+            setOutput('actualLanding', actualLanding);
+            setOutput('profit', profit);
+        }
+
+        // Add event listeners to all inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateAll);
+        });
+
+        // Initial calculation
+        calculateAll();
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
